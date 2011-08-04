@@ -1,0 +1,43 @@
+define DNSCachePoisoning: import cachePoisoning cp
+    logical topology:
+        objects:
+            Auth := Node
+			Name := DNSName
+            ((Name := cp.Name and
+			FakeIP := IPAddress and
+			FakeIP := cp.fakeResource) xor
+            (domain.Name := cp.Name and
+			fakeAuth := DNSName and 
+			fakeAuth := cp.fakeResource))
+            RealIP := IPAddress
+            victimCache := cp.Cache {DNSRecord[] records}
+            authCache := Object{DNSRecord[] records = {Name=RealIP, auth(domain(Name)) = Auth}}
+        cardinality:
+            |Auth|1
+            |RealIP|1
+            |authCache|1
+        relationships:
+            not collocated(victimCache, Auth)
+            collocated(authCache, Auth)
+    timeline of events:
+        definitions:
+            DNSREQUEST extends REQUEST
+            DNSREPLY extends REPLY
+            Attacker att, Auth auth, Name n, FakeIP fIP, fakeAuth fauth, RealIP rIP, victimCache vc, authCache ac:
+                e1 := {type = DNSREQUEST, origin = att, destination = vc, String content = {n=?}}
+                e2 := {type = DNSREQUEST, origin = vc, destination = auth, String content = {n=?}}
+                e3 := {type = DNSREPLY, origin = auth, destination = vc, String content = {n=rIP}}
+                e4 := {type = DNSREPLY, origin = auth, destination = vc, String content = {n=unknown}}
+                e5 := cp.e1
+				e5 := {type = DNSREPLY, origin = att, destination = vc, content = {auth(domain(n)) = fakeAuth}}
+                s1 := cp.s1
+				s1 := {vc.records += {auth(domain(n)) = fakeAuth}}
+                e6 := cp.e1
+				e6 := {type = DNSREPLY, origin = att, destination = vc, content = {n=fIP}}
+                s2 := cp.s1
+				s1 := {vc.records += {n=fIP}}
+        timeline:
+            e1 -> e2 -> ((e5 suchthat matches(e5,e2) -> s1 -> e4) xor (e6 suchthat matches(e6, e2) -> s2 -> e3))
+invariants:
+monitoring:
+postExperiment:

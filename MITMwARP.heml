@@ -1,0 +1,17 @@
+define MITMwARP: import ARPPoisoning arp1, ARPPoisoning arp2, MITMAttack mitm
+    logical topology:
+        objects:
+            mac(mitm.Attacker) := arp1.FakePA
+            ip(mitm.Node2) := arp1.IP
+            mac(mitm.Attacker) := arp2.fakePA
+            ip(mitm.Node1) := arp2.IP
+        cardinality:
+        relationships:
+            collocated(arp1.Cache, mitm.Node1)
+            collocated(arp2.Cache, mitm.Node2)
+    timeline of events:
+        timeline:
+            (arp1.timeline || arp2.timeline) -> mitm.timeline
+invariants: 
+monitoring:
+postExperiment:

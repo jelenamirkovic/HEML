@@ -1,0 +1,30 @@
+define confidentialAccess:
+    logical topology:
+        objects:
+            User := Human
+            Server := webServer
+            Page := webPage
+            Public := String
+			Confidential := String
+        cardinality:
+            |User|1
+            |Server|1
+            |Page|>=1
+            |Public|1
+            |Confidential|1
+        relationships:
+            collocated(Page, Server)
+    timeline of events:
+        definitions:
+            WEBREQUEST extends REQUEST
+            WEBREPLY extends REPLY
+            User u, Server s, Public p, Confidential c, Page wp:
+                e1 := {type = WEBREQUEST, origin = u, destination = s, content = url(wp)}
+                e2 := {type = WEBREQUEST, origin = s, destination = u, content = {public=?, confidential=?}}
+                e3 := {type = WEBREPLY, origin = u, destination = s, content = {public=x, confidential=y}}
+                e4 := {type = WEBREPLY, origin = s, destination = u, content = wp}
+        timeline:
+            e1 -> e2 -> e3 -> if (x == p and y == c) then e4 endif
+invariants:
+monitoring:
+postExperiment:

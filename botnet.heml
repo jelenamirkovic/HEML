@@ -1,0 +1,13 @@
+    define Botnet: import Worm w, P2Pbot p2pb
+    logical topology:
+        objects:
+            each p2pb.Peer p, each w.Infected i:
+                p := i 
+        cardinality:
+        relationships:
+    timeline of events:
+        timeline:
+            w.timeline || p2pb.timeline
+invariants:
+monitoring:
+postExperiment:

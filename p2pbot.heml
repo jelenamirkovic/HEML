@@ -1,0 +1,29 @@
+define P2Pbot:
+    logical topology:
+        objects:
+            Peer := Node{Peer[] peers = {}, Leader leader = none }
+            Leader := Peer{Peer[] slaves = {} }
+        cardinality:
+            |Peer|>=2
+            |Leader|>=1
+        relationships:
+    timeline of events:
+        definitions:
+            PEERREQUEST extends REQUEST
+            PEERREPLY extends REPLY
+            each Peer peer1, some Peer peer2:
+                e1 := {type = PEERREQUEST, origin = peer1, destination = peer2}
+                e2 := {type = PEERREPLY, origin = peer2, destination = peer1}
+                s1 := {peer2.peers += peer1}
+                s2 := {peer2.peers += peer1}
+            each Peer x:
+                e3 := {type = LEADERIS, origin = p suchthat belong(p,x.peers), destination = x, Leader yourleader = leader}
+                s3 := {x.leader = leader}
+                e4 := {type = HELLO, origin = x, destination = x.leader}
+                e5 := {type = CMD, origin = x.leader, destination = x, String cmd = c}
+                e6 := {type = REPORT, origin = x, destination = x, String report = r}
+        timeline:
+           ( e1 -> [s1 -> (e2 suchthat matches(e2,e1)) -> s2]) -> e3 -> s3 -> e4 -> e5 -> [e6]
+    invariants: 
+monitoring:
+postExperiment:

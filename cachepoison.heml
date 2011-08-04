@@ -1,0 +1,24 @@
+    define cachePoisoning:
+    logical topology:
+        objects:
+            Attacker := Node
+            Name := String
+			fakeResource := String
+            Cache := Object {String[] records}
+        cardinality:
+            |Attacker|1
+            |Name|1
+            |fakeResource|1
+            |Cache|1
+        relationships:
+            not collocated(Cache, Attacker)
+    timeline of events:
+        definitions:
+             Attacker a,  Cache c,  Name n,  fakeResource fr:
+            e1 := {type = REPLY, origin = a, destination = c, String content = {n=fr}}
+            s1 := {c.records += {n=fr}}
+        timeline:
+            e1 -> s1
+invariants: 
+monitoring:
+postExperiment:

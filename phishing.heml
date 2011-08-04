@@ -1,0 +1,12 @@
+define Phishing: import DNSCachePoisoning dcp, confidentialAccess ca
+    logical topology:
+        objects:
+            dcp.FakeIP := ip(ca.Server)
+        cardinality:
+        relationships:
+    timeline of events:
+            timeline:
+            dcp.timeline -> ca.timeline
+invariants:
+monitoring:
+postExperiment:
