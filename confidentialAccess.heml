@@ -5,7 +5,7 @@ define confidentialAccess:
             Server := webServer
             Page := webPage
             Public := String
-			Confidential := String
+	    Confidential := String
         cardinality:
             |User|1
             |Server|1
@@ -25,6 +25,6 @@ define confidentialAccess:
                 e4 := {type = WEBREPLY, origin = s, destination = u, content = wp}
         timeline:
             e1 -> e2 -> e3 -> if (x == p and y == c) then e4 endif
-invariants:
-monitoring:
-postExperiment:
+   invariants:
+   monitoring:
+   postExperiment:

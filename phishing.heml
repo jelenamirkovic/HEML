@@ -5,8 +5,8 @@ define Phishing: import DNSCachePoisoning dcp, confidentialAccess ca
         cardinality:
         relationships:
     timeline of events:
-            timeline:
+        timeline:
             dcp.timeline -> ca.timeline
-invariants:
-monitoring:
-postExperiment:
+    invariants:
+    monitoring:
+    postExperiment:

@@ -1,5 +1,5 @@
 define MITMwARP: import ARPPoisoning arp1, ARPPoisoning arp2, MITMAttack mitm
-    logical topology:
+   logical topology:
         objects:
             mac(mitm.Attacker) := arp1.FakePA
             ip(mitm.Node2) := arp1.IP
@@ -9,9 +9,9 @@ define MITMwARP: import ARPPoisoning arp1, ARPPoisoning arp2, MITMAttack mitm
         relationships:
             collocated(arp1.Cache, mitm.Node1)
             collocated(arp2.Cache, mitm.Node2)
-    timeline of events:
+   timeline of events:
         timeline:
             (arp1.timeline || arp2.timeline) -> mitm.timeline
-invariants: 
-monitoring:
-postExperiment:
+   invariants: 
+   monitoring:
+   postExperiment:

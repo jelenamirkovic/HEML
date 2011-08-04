@@ -8,6 +8,6 @@
     timeline of events:
         timeline:
             w.timeline || p2pb.timeline
-invariants:
-monitoring:
-postExperiment:
+   invariants:
+   monitoring:
+   postExperiment:

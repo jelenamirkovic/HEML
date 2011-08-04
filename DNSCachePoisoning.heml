@@ -2,7 +2,7 @@ define DNSCachePoisoning: import cachePoisoning cp
     logical topology:
         objects:
             Auth := Node
-			Name := DNSName
+	    Name := DNSName
             ((Name := cp.Name and
 			FakeIP := IPAddress and
 			FakeIP := cp.fakeResource) xor
@@ -29,15 +29,15 @@ define DNSCachePoisoning: import cachePoisoning cp
                 e3 := {type = DNSREPLY, origin = auth, destination = vc, String content = {n=rIP}}
                 e4 := {type = DNSREPLY, origin = auth, destination = vc, String content = {n=unknown}}
                 e5 := cp.e1
-				e5 := {type = DNSREPLY, origin = att, destination = vc, content = {auth(domain(n)) = fakeAuth}}
+		e5 := {type = DNSREPLY, origin = att, destination = vc, content = {auth(domain(n)) = fakeAuth}}
                 s1 := cp.s1
-				s1 := {vc.records += {auth(domain(n)) = fakeAuth}}
+		s1 := {vc.records += {auth(domain(n)) = fakeAuth}}
                 e6 := cp.e1
-				e6 := {type = DNSREPLY, origin = att, destination = vc, content = {n=fIP}}
+		s6 := {type = DNSREPLY, origin = att, destination = vc, content = {n=fIP}}
                 s2 := cp.s1
-				s1 := {vc.records += {n=fIP}}
+		s2 := {vc.records += {n=fIP}}
         timeline:
             e1 -> e2 -> ((e5 suchthat matches(e5,e2) -> s1 -> e4) xor (e6 suchthat matches(e6, e2) -> s2 -> e3))
-invariants:
-monitoring:
-postExperiment:
+   invariants:
+   monitoring:
+   postExperiment:

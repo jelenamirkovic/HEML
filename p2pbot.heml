@@ -23,7 +23,7 @@ define P2Pbot:
                 e5 := {type = CMD, origin = x.leader, destination = x, String cmd = c}
                 e6 := {type = REPORT, origin = x, destination = x, String report = r}
         timeline:
-           ( e1 -> [s1 -> (e2 suchthat matches(e2,e1)) -> s2]) -> e3 -> s3 -> e4 -> e5 -> [e6]
-    invariants: 
-monitoring:
-postExperiment:
+           (e1 -> [s1 -> (e2 suchthat matches(e2,e1)) -> s2]) -> e3 -> s3 -> e4 -> e5 -> [e6]
+   invariants: 
+   monitoring:
+   postExperiment:
