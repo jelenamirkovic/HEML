@@ -12,6 +12,6 @@ define MITMwARP: import ARPPoisoning arp1, ARPPoisoning arp2, MITMAttack mitm
     timeline of events:
         timeline:
             (arp1.timeline || arp2.timeline) -> mitm.timeline
-invariants: 
-monitoring:
-postExperiment:
+    invariants: 
+    monitoring:
+    postExperiment:

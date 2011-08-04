@@ -2,21 +2,21 @@ define ARPPoisoning: import cachePoisoning cp
     logical topology:
         objects:
             IP := cp.Name
-			IP := IPAddress
+	    IP := IPAddress
             fakePA := cp.fakeResource
- 			fakePA := MACAddress
-			Cache := cp.Cache{ARPRecord[] records}
+ 	    fakePA := MACAddress
+	    Cache := cp.Cache{ARPRecord[] records}
         cardinality:
         relationships:
     timeline of events:
         definitions:
-			ARPREPLY extends REPLY
+		ARPREPLY extends REPLY
             Attacker a, IP ip, fakePA fpa, Cache c :
                 e1 := cp.e1
-				e1 := {type = ARPREPLY, origin = a, destination = c, content = {ip = fpa}}
+		e1 := {type = ARPREPLY, origin = a, destination = c, content = {ip = fpa}}
                 s1 := cp.s1
         timeline:
             cp.timeline
-invariants:
-monitoring:
-postExperiment:
+   invariants:
+   monitoring:
+   postExperiment:

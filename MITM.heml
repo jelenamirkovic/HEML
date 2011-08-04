@@ -2,8 +2,8 @@ define MITM:
     logical topology:
         objects:
             Attacker :=  Node
-			Node1 := Node
-			Node2 := Node
+            Node1 := Node
+	    Node2 := Node
         cardinality:
             |Attacker|1
             |Node1|1
@@ -19,6 +19,6 @@ define MITM:
         timeline:
             (e1 -> e2) || (e3 -> e4)
 
-invariants: 
-monitoring:
-postExperiment:
+    invariants: 
+    monitoring:
+    postExperiment:
