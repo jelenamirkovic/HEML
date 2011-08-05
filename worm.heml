@@ -1,17 +1,19 @@
-define MITMwARP: import ARPPoisoning arp1, ARPPoisoning arp2, MITMAttack mitm
-   logical topology:
+define Worm:
+    logical topology:
         objects:
-            mac(mitm.Attacker) := arp1.FakePA
-            ip(mitm.Node2) := arp1.IP
-            mac(mitm.Attacker) := arp2.fakePA
-            ip(mitm.Node1) := arp2.IP
+            VNode := Node {state = Vulnerable, Vulnerability vulnerability = x}
+            INode := VNode {state = Infected}
         cardinality:
+            |INode|>=1
+            |VNode|>=1
         relationships:
-            collocated(arp1.Cache, mitm.Node1)
-            collocated(arp2.Cache, mitm.Node2)
-   timeline of events:
+    timeline of events:
+        definitions:
+            each Inode i, some VNode v:
+                e1 := {type = SCAN, origin = i, destination = v, Vulnerability vulnerability = x }
+                s1 := {v.state1 = Infected}
         timeline:
-            (arp1.timeline || arp2.timeline) -> mitm.timeline
+            e1  -> if (e1.vulnerability == v.vulnerability) then s1 endif
    invariants: 
    monitoring:
    postExperiment:
